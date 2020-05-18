@@ -5,10 +5,10 @@
 
             <div>
                 <h1>Login</h1>
-                <v-form @submit.prevent="login">
+                <v-form>
                     <v-text-field type="email" label="email" v-model="email" required></v-text-field>
                     <v-text-field type="password" label="password" v-model="password" required></v-text-field>
-                    <v-btn type="submit">Login</v-btn>
+                    <v-btn @click.prevent.stop="login" type="submit">Login</v-btn>
                 </v-form>
             </div>
 
@@ -38,9 +38,7 @@
                     .then(() => {
                         this.$router.push({ name: 'About' })
                     })
-                    .catch(err => {
-                        console.log(err)
-                    })
+
             },
         }
     }

@@ -20,17 +20,16 @@ export default new Vuex.Store({
     clearUserData () {
       localStorage.removeItem('user')
       location.reload()
-    }
+    },
   },
 
-  actions: {
-    login ({ commit }, credentials) {
-      return axios
-          .post('/api/login', credentials)
-          .then(({ data }) => {
-            commit('setUserData', data)
-          })
-    },
+
+    actions: {
+      login({ commit }, credentials) {
+        return axios.post('', credentials).then(({ data }) => {
+          commit("setUserData", data);
+        });
+      },
       register ({ commit }, credentials) {
           return axios
               .post('/api/users/register', credentials)

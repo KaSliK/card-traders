@@ -1,9 +1,7 @@
 <template>
-  <v-app style="background-color: lightgray">
+  <v-app style="background: #f6ecd8">
+    <Navbar />
     <v-content class="mx-4 mb-4">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about" v-if="isLogged">About</router-link>
-      <router-link to="/login" v-else>Login</router-link>
       <v-btn type="button" @click="logout()" v-if="isLogged">
         Logout
       </v-btn>
@@ -14,8 +12,10 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import Navbar from '@/components/Navbar.vue'
 
   export default {
+    components: { Navbar },
     computed: {
       ...mapGetters([
         'isLogged'
