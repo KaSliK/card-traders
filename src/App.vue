@@ -1,32 +1,31 @@
 <template>
-  <div id="app">
-    <div id="nav">
+  <v-app style="background-color: lightgray">
+    <v-content class="mx-4 mb-4">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+      <router-link to="/about" v-if="isLogged">About</router-link>
+      <router-link to="/login" v-else>Login</router-link>
+      <v-btn type="button" @click="logout()" v-if="isLogged">
+        Logout
+      </v-btn>
+      <router-view/>
+    </v-content>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+  import { mapGetters } from 'vuex'
 
-#nav {
-  padding: 30px;
-}
+  export default {
+    computed: {
+      ...mapGetters([
+        'isLogged'
+      ])
+    },
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+    methods: {
+      logout () {
+        this.$store.dispatch('logout')
+      }
+    }
+  }
+</script>
