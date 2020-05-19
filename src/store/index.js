@@ -7,35 +7,75 @@ axios.defaults.baseURL = 'http://ct.zobacztu.pl'
 
 export default new Vuex.Store({
   state: {
-    user: null
+    user: null,
+    token: localStorage.getItem('access_token') || null
   },
 
   mutations: {
-    setUserData (state, userData) {
-      state.user = userData
-      localStorage.setItem('user', JSON.stringify(userData))
-      axios.defaults.headers.common.Authorization = `Bearer ${userData.token}`
+    retrieveToken(state, token) {
+      state.token = token
     },
-
-    clearUserData () {
-      localStorage.removeItem('user')
-      location.reload()
+    destroyToken(state) {
+          state.token = null
     },
   },
 
-
     actions: {
-      login({ commit }, credentials) {
-        return axios.post('', credentials).then(({ data }) => {
-          commit("setUserData", data);
-        });
-      },
-      register ({ commit }, credentials) {
-          return axios
-              .post('/api/users/register', credentials)
-              .then(({ data }) => {
-                  commit('setUserData', data)
+      register(context, data) {
+          return new Promise((resolve, reject) => {
+              axios.post('/api/users/register', {
+                  name: data.name,
+                  email: data.email,
+                  password: data.password,
+                  c_password: data.c_password
               })
+                  .then(response => {
+
+                      resolve(response)
+                  })
+                  .catch(error => {
+                      localStorage.removeItem('access_token')
+                      context.commit('destroyToken')
+                      reject(error)
+                  })
+          })
+      },
+      destroyToken(context) {
+          axios.defaults.headers.common['Authorization'] = 'Bearer' + context.state.token
+          if(context.getters.loggedIn)
+          {
+              return new Promise((resolve, reject) => {
+                  axios.post('')
+                      .then(response => {
+                          const token = response.data.success.token
+                          localStorage.setItem('access_token', token)
+                          context.commit('destroyToken')
+                          resolve(response)
+                      })
+                      .catch(error => {
+                          localStorage.removeItem('access_token')
+                          context.commit('destroyToken')
+                          reject(error)
+                      })
+              })
+          }
+      },
+      retrieveToken(context, credentials) {
+        return new Promise((resolve, reject) => {
+          axios.post('/api/login', {
+            email: credentials.email,
+            password: credentials.password,
+          })
+              .then(response => {
+                const token = response.data.success.token
+                localStorage.setItem('access_token', token)
+                context.commit('retrieveToken', token)
+                resolve(response)
+              })
+              .catch(error => {
+                reject(error)
+              })
+        })
       },
 
     logout ({ commit }) {
@@ -43,6 +83,8 @@ export default new Vuex.Store({
     }
   },
   getters : {
-    isLogged: state => !!state.user
+    loggedIn(state) {
+      return state.token !== null
+    }
   }
 })

@@ -1,21 +1,21 @@
 <template>
     <nav>
         <v-app-bar app flat clipped color="#f6ecd8">
-            <v-app-bar-nav-icon v-if="isLogged" class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon v-if="loggedIn" class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title class="text-uppercase grey--text">
                 <span>CardTraders</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
 
-            <v-btn v-if="isLogged" text color="grey">
+            <v-btn router :to="'/logout'" v-if="loggedIn" text color="grey">
                 <span>Wyloguj</span>
                 <v-icon right>mdi-exit-to-app</v-icon>
             </v-btn>
-            <v-btn router :to="'/login'" v-if="!isLogged" text color="grey">
+            <v-btn router :to="'/login'" v-if="!loggedIn" text color="grey">
                 <span>Logowanie</span>
                 <v-icon right>mdi-exit-to-app</v-icon>
             </v-btn>
-            <v-btn router :to="'/register'" v-if="!isLogged" text color="grey">
+            <v-btn router :to="'/register'" v-if="!loggedIn" text color="grey">
                 <span>Rejestracja</span>
                 <v-icon right>mdi-exit-to-app</v-icon>
             </v-btn>
@@ -46,17 +46,25 @@
         name: "Navbar",
         computed: {
             ...mapGetters([
-                'isLogged'
-            ])
+                'isLogged',
+            ]),
+            loggedIn() {
+                return this.$store.getters.loggedIn
+            }
         },
         data() {
             return {
                 drawer: false,
                 links: [
                     {icon: 'mdi-cards-outline', text: 'Home', route: '/'},
-                    {icon: 'mdi-cards', text: 'Home', route: '/'},
+                    {icon: 'mdi-cards', text: 'About', route: '/about'},
 
                 ],
+            }
+        },
+        methods: {
+            logout () {
+                this.$store.dispatch('logout')
             }
         }
     }

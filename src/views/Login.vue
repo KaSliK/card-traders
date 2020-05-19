@@ -5,12 +5,15 @@
 
             <div>
                 <h1>Login</h1>
-                <v-form>
+                <v-form >
                     <v-text-field type="email" label="email" v-model="email" required></v-text-field>
                     <v-text-field type="password" label="password" v-model="password" required></v-text-field>
-                    <v-btn @click.prevent.stop="login" type="submit">Login</v-btn>
+                    <v-btn v-on:click.prevent.stop="login" >Login</v-btn>
                 </v-form>
             </div>
+            <v-btn type="button" @click="logout()" v-if="!isLogged">
+                Logout
+            </v-btn>
 
 
 
@@ -31,12 +34,13 @@
         methods: {
             login () {
                 this.$store
-                    .dispatch('login', {
+                    .dispatch('retrieveToken', {
                         email: this.email,
                         password: this.password
                     })
-                    .then(() => {
-                        this.$router.push({ name: 'About' })
+                    .then((response)=> {
+                        this.$router.push({ name: 'Home' })
+                        console.log(response)
                     })
 
             },

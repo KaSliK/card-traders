@@ -2,9 +2,8 @@
     <v-container fluid fill-height>
         <v-layout justify-center align-center>
 
-
             <div>
-                <h1>Login</h1>
+                <h1>Register</h1>
                 <v-form @submit.prevent="register">
                     <v-text-field type="string" label="name" v-model="name" required></v-text-field>
                     <v-text-field type="email" label="email" v-model="email" required></v-text-field>
@@ -14,10 +13,7 @@
                 </v-form>
             </div>
 
-
-
         </v-layout>
-
     </v-container>
 </template>
 
@@ -41,7 +37,7 @@
                         c_password: this.c_password
                     })
                     .then(() => {
-                        this.$router.push({ name: 'About' })
+                        this.$router.push({ name: 'Login' })
                     })
                     .catch(err => {
                         console.log(err)

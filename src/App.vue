@@ -11,15 +11,15 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
   import Navbar from '@/components/Navbar.vue'
 
   export default {
     components: { Navbar },
     computed: {
-      ...mapGetters([
-        'isLogged'
-      ])
+      loggedIn() {
+        return this.$store.getters.loggedIn
+      }
+
     },
 
     methods: {

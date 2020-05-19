@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '../store'
+
 
 Vue.use(VueRouter)
 
@@ -9,30 +11,35 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    meta: {
-      auth: true
-    },
   },
   {
     path: '/about',
     name: 'About',
     meta: {
-      auth: true
+      requiresAuth: true,
     },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import('../views/About.vue')
   },
   {
     path: '/login',
     name: 'Login',
+    meta: {
+      requiresVisitor: true,
+    },
     component: () => import('../views/Login.vue')
   },
   {
     path: '/register',
     name: 'Register',
+    meta: {
+      requiresVisitor: true,
+    },
     component: () => import(/* webpackChunkName: "login" */ '../views/Register.vue')
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: () => import(/* webpackChunkName: "login" */ '../components/Logout.vue')
   }
 ]
 
@@ -40,14 +47,30 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  const loggedIn = localStorage.getItem('user')
 
-  if (to.matched.some(record => record.meta.auth) && !loggedIn) {
-    next('/login')
-    return
-  }
-  next()
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.getters.loggedIn) {
+      next({
+        name: 'Login',
+      })
+    } else {
+      next()
+    }
+    } else if (to.matched.some(record => record.meta.requiresVisitor)) {
+      if (store.getters.loggedIn) {
+        next({
+          name: 'Home',
+        })
+      } else {
+          next()
+        }
+      } else {
+      next()
+
+    }
+
 })
+
 
 export default router
