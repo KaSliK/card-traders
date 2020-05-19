@@ -34,12 +34,32 @@ const routes = [
     meta: {
       requiresVisitor: true,
     },
-    component: () => import(/* webpackChunkName: "login" */ '../views/Register.vue')
+    component: () => import('../views/Register.vue')
   },
   {
     path: '/logout',
     name: 'Logout',
-    component: () => import(/* webpackChunkName: "login" */ '../components/Logout.vue')
+    component: () => import('../components/Logout.vue')
+  },
+  {
+    path: '/profil',
+    name: 'Profile',
+    component: () => import('../views/Profile.vue')
+  },
+  {
+    path: '/wszystkie_karty',
+    name: 'AllCards',
+    component: () => import('../views/AllCards.vue')
+  },
+  {
+    path: '/moje_karty',
+    name: 'MyCards',
+    component: () => import('../views/MyCards.vue')
+  },
+  {
+    path: '/karty_wystawione_na_wymiane',
+    name: 'ForChangeCards',
+    component: () => import('../views/ForChangeCards.vue')
   }
 ]
 

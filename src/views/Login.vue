@@ -11,9 +11,6 @@
                     <v-btn v-on:click.prevent.stop="login" >Login</v-btn>
                 </v-form>
             </div>
-            <v-btn type="button" @click="logout()" v-if="!isLogged">
-                Logout
-            </v-btn>
 
 
 
