@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 axios.defaults.baseURL = 'http://ct.zobacztu.pl'
 
+
 export default new Vuex.Store({
   state: {
     user: null,
@@ -32,7 +33,7 @@ export default new Vuex.Store({
                   .then(response => {
 
                       resolve(response)
-                  })
+                  0})
                   .catch(error => {
                       localStorage.removeItem('access_token')
                       context.commit('destroyToken')
@@ -62,21 +63,38 @@ export default new Vuex.Store({
       },
       retrieveToken(context, credentials) {
         return new Promise((resolve, reject) => {
-          axios.post('/api/login', {
-            email: credentials.email,
-            password: credentials.password,
-          })
-              .then(response => {
-                const token = response.data.success.token
-                localStorage.setItem('access_token', token)
-                context.commit('retrieveToken', token)
-                resolve(response)
-              })
-              .catch(error => {
-                reject(error)
-              })
-        })
+                //axios.post('http://localhost:8000/login', {
+                   axios.post('/api/login', {
+                    email: credentials.email,
+                    password: credentials.password,
+                })
+                    .then(response => {
+                         const token = response.data.success.token
+                       //const token = response.data.token
+                        localStorage.setItem('access_token', token)
+                        context.commit('retrieveToken', token)
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            })
+
+
       },
+        retrieveInfo(context) {
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+            return new Promise((resolve, reject) => {
+                axios.post('/api/users/details')
+                    .then(response => {
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            })
+        },
 
     logout ({ commit }) {
       commit('clearUserData')

@@ -5,7 +5,10 @@
 
             <div>
                 <h1>Login</h1>
-                <v-form >
+                <v-alert v-if="serverError" type="error">
+                    {{serverError}}
+                </v-alert>
+                <v-form action="#" @submit.prevent="login">
                     <v-text-field type="email" label="email" v-model="email" required></v-text-field>
                     <v-text-field type="password" label="password" v-model="password" required></v-text-field>
                     <v-btn v-on:click.prevent.stop="login" >Login</v-btn>
@@ -24,7 +27,8 @@
         data () {
             return {
                 email: '',
-                password: ''
+                password: '',
+                serverError: ''
             }
         },
 
@@ -39,6 +43,10 @@
                         this.$router.push({ name: 'Home' })
                         console.log(response)
                     })
+                    .catch(error => {
+                    this.serverError= error.response.data.error
+                        this.password = ''
+                })
 
             },
         }

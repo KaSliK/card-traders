@@ -5,10 +5,15 @@
             <div>
                 <h1>Register</h1>
                 <v-form @submit.prevent="register">
+                    <v-alert v-if="serverErrors" type="error">
+                        <div v-for="(value,key) in serverErrors" :key="key" >
+            {{value[0]}}</div>
+
+                    </v-alert>
                     <v-text-field type="string" label="name" v-model="name" required></v-text-field>
                     <v-text-field type="email" label="email" v-model="email" required></v-text-field>
                     <v-text-field type="password" label="password" v-model="password" required></v-text-field>
-                    <v-text-field  label="c_password" v-model="c_password" required></v-text-field>
+                    <v-text-field type="password" label="repeat password" v-model="c_password" required></v-text-field>
                     <v-btn type="submit">register</v-btn>
                 </v-form>
             </div>
@@ -24,7 +29,8 @@
                 email: '',
                 name: '',
                 password: '',
-                c_password: ''
+                c_password: '',
+                serverErrors: ''
             }
         },
         methods: {
@@ -39,8 +45,8 @@
                     .then(() => {
                         this.$router.push({ name: 'Login' })
                     })
-                    .catch(err => {
-                        console.log(err)
+                    .catch(error => {
+                        this.serverErrors = Object.values(error.response.data.error)
                     })
             },
         }
