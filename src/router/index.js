@@ -45,21 +45,33 @@ const routes = [
   {
     path: '/profil',
     name: 'Profile',
+    meta: {
+      requiresAuth: true,
+    },
     component: () => import('../views/Profile.vue')
   },
   {
     path: '/wszystkie_karty',
     name: 'AllCards',
+    meta: {
+      requiresAuth: true,
+    },
     component: () => import('../views/AllCards.vue')
   },
   {
     path: '/moje_karty',
     name: 'MyCards',
+    meta: {
+      requiresAuth: true,
+    },
     component: () => import('../views/MyCards.vue')
   },
   {
     path: '/karty_wystawione_na_wymiane',
     name: 'ForChangeCards',
+    meta: {
+      requiresAuth: true,
+    },
     component: () => import('../views/ForChangeCards.vue')
   }
 ]

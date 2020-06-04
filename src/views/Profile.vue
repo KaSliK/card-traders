@@ -57,7 +57,6 @@
             this.$store.dispatch('retrieveInfo')
                 .then(response => {
                     this.userInfo = response.data.data
-                    console.log(this.userInfo.cards)
                 })
         }
     }

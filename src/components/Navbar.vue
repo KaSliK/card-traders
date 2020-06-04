@@ -16,7 +16,7 @@
             <v-btn fab small router :to="'/'" v-if="!loggedIn" text color="grey">
                 <v-icon>mdi-home</v-icon>
             </v-btn>
-            <v-btn router :to="'/logout'" v-if="loggedIn" text color="grey">
+            <v-btn router @click="logout" v-if="loggedIn" text color="grey">
                 <span class="d-none d-sm-flex">Wyloguj</span>
                 <v-icon right>mdi-exit-to-app</v-icon>
             </v-btn>

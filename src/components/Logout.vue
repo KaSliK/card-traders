@@ -12,6 +12,7 @@
             }).catch(() => this.$router.push({ name: 'Home' }))
         }
 
+
     }
 </script>
 

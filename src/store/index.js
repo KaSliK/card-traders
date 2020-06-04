@@ -26,6 +26,14 @@ export default new Vuex.Store({
      },
      addSubCategory(state, payload) {
         state.subCategories.push(payload)
+     },
+     saveUserInfo(state, payload) {
+       console.log(payload)
+        state.user = payload
+     },
+     clearUserData() {
+        localStorage.removeItem("access_token");
+        location.reload()
      }
   },
 
@@ -49,7 +57,6 @@ export default new Vuex.Store({
        })
    },
    destroyToken(context) {
-       axios.defaults.headers.common['Authorization'] = 'Bearer' + context.state.token
        if(context.getters.loggedIn)
        {
            return new Promise((resolve, reject) => {
@@ -70,14 +77,12 @@ export default new Vuex.Store({
    },
    retrieveToken(context, credentials) {
      return new Promise((resolve, reject) => {
-             //axios.post('http://localhost:8000/login', {
                 axios.post('/api/login', {
                  email: credentials.email,
                  password: credentials.password,
              })
                  .then(response => {
                       const token = response.data.data.token
-                    //const token = response.data.token
                      localStorage.setItem('access_token', token)
                      context.commit('retrieveToken', token)
                      resolve(response)
@@ -86,13 +91,12 @@ export default new Vuex.Store({
                      reject(error)
                  })
          })
-
-
    },
-     retrieveInfo() {
+     retrieveInfo({commit}) {
          return new Promise((resolve, reject) => {
              axios.get('/api/users/details')
                  .then(response => {
+                    commit('saveUserInfo', response.data.data)
                      resolve(response)
                  })
                  .catch(error => {
@@ -140,6 +144,9 @@ export default new Vuex.Store({
     loggedIn(state) {
       return state.token !== null
     },
+     token(state) {
+       return state.token
+     },
      categories(state) {
        return state.categories
      },
