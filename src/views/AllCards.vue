@@ -7,7 +7,7 @@
                   :items="this.categories"
                   item-text="name"
                   item-value="id"
-                  label="Select category"
+                  label="Piosenkarka"
                   solo
                   v-model="category"
             ></v-select>
@@ -17,28 +17,29 @@
                   :items="this.subCategories"
                   item-text="name"
                   item-value="id"
-                  label="Select Subcategory"
+                  label="Album"
                   solo
                   v-model="subCategory"
             ></v-select>
          </v-flex>
       </v-layout>
       <v-layout class="row wrap">
-         <v-flex class="xs12 md4 lg2" v-for="card in cards" :key="card.id">
+         <v-flex class="xs12 sm4 md4 lg2" v-for="card in cards" :key="card.id">
             <v-card class="ma-1">
-               <v-container class="fluid mx-3">
+               <v-container class="fluid">
                   <v-layout class="row">
-                     <v-flex>
+                     <v-flex class="xs6">
                         <v-img :src="card.image">
                         </v-img>
                      </v-flex>
-                     <v-flex>
-                        <v-card-title>
-                           <v-card-actions>
-                              <v-btn>
-                              </v-btn>
+                     <v-flex class="xs6">
+                           <v-card-title>
+                              <h2>{{card.category.name}}</h2>
+                              <h6>{{card.subcateogry.name}}</h6>
+                           </v-card-title>
+                           <v-card-actions class="justify-center">
+                              <v-btn >Posiadam</v-btn>
                            </v-card-actions>
-                        </v-card-title>
                      </v-flex>
                   </v-layout>
                </v-container>
@@ -57,28 +58,38 @@
               category: null,
               subCategory: null,
               categories: null,
-              subCategories: null,
+              subCategories: [],
               cards: null,
            }
        },
        mounted() {
-        this.categories = this.$store.getters.categories
-        this.subCategories = this.$store.getters.subCategories
+        this.categories = this.$store.getters.categories,
+        this.subCategories = this.$store.getters.subCategories,
+        this.subCategories.push({name: 'Wszystkie'})
 
        },
        watch: {
            category: function () {
               this.getCards()
+           },
+           subCategory: function () {
+              this.getCards()
            }
        },
        methods: {
            getCards: function () {
-              axios.get(`/api/cards/c/${this.category}`).then(response => {
-                 this.cards = response.data.data
-                 console.log(response.data.data)
+              if(!this.subCategory || this.subCategory === 'Wszystkie') {
+                 axios.get(`/api/cards/c/${this.category}`).then(response => {
+                    this.cards = response.data.data
               })
-           }
+              } else {
+                 console.log(this.subCategory)
+               axios.get(`/api/cards/${this.category}/${this.subCategory}`).then(response => {
+                   this.cards = response.data.data
 
+                  })
+               }
+           }
        }
     }
 </script>
