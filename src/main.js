@@ -27,8 +27,8 @@ new Vue({
   store,
   vuetify,
   created () {
-    this.$store.dispatch('getCategories')
-    this.$store.dispatch('getSubCategories')
+      this.$store.dispatch('getCategories')
+      this.$store.dispatch('getSubCategories')
   },
   render: h => h(App)
 }).$mount('#app')

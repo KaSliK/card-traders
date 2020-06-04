@@ -8,7 +8,7 @@ axios.defaults.baseURL = 'http://ct.zobacztu.pl'
 
 export default new Vuex.Store({
   state: {
-   user: null,
+   user: localStorage.getItem('user') || null,
    token: localStorage.getItem('access_token') || null,
    categories: [],
    subCategories: []
@@ -28,11 +28,14 @@ export default new Vuex.Store({
         state.subCategories.push(payload)
      },
      saveUserInfo(state, payload) {
-       console.log(payload)
         state.user = payload
+        localStorage.setItem("user", JSON.stringify(payload));
      },
-     clearUserData() {
+     clearUserData(state) {
         localStorage.removeItem("access_token");
+        localStorage.removeItem("user");
+        state.token=null
+        state.user=null
         location.reload()
      }
   },
@@ -152,6 +155,9 @@ export default new Vuex.Store({
      },
      subCategories(state) {
         return state.subCategories
+     },
+     userCards(state) {
+       if(state.user) return state.user.cards
      }
 
   }
