@@ -21,7 +21,7 @@
         background-image: url('../assets/mainLogo.png');
         background-repeat: no-repeat;
         background-size: cover;
-        background-position: 80% 0;
+        background-position: 60% 0;
         justify-content:center;
     }
 

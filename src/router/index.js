@@ -26,6 +26,7 @@ const routes = [
     meta: {
       requiresVisitor: true,
     },
+    props: true,
     component: () => import('../views/Login.vue')
   },
   {

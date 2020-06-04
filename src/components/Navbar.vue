@@ -3,7 +3,13 @@
         <v-app-bar app flat clipped color="#f6ecd8">
             <v-app-bar-nav-icon v-if="loggedIn" class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title class="text-uppercase grey--text">
-                <span >CardTraders</span>
+                <router-link
+                      to="/"
+                      tag="span"
+                      style="cursor: pointer"
+                >
+                    CardTraders
+                </router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
 
@@ -11,20 +17,20 @@
                 <v-icon>mdi-home</v-icon>
             </v-btn>
             <v-btn router :to="'/logout'" v-if="loggedIn" text color="grey">
-                <span>Wyloguj</span>
+                <span class="d-none d-sm-flex">Wyloguj</span>
                 <v-icon right>mdi-exit-to-app</v-icon>
             </v-btn>
             <v-btn router :to="'/login'" v-if="!loggedIn" text color="grey">
-                <span>Logowanie</span>
+                <span class="d-none d-sm-flex">Logowanie</span>
                 <v-icon right>mdi-login</v-icon>
             </v-btn>
             <v-btn router :to="'/register'" v-if="!loggedIn" text color="grey">
-                <span>Rejestracja</span>
+                <span class="d-none d-sm-flex">Rejestracja</span>
                 <v-icon right>mdi-account-plus-outline</v-icon>
             </v-btn>
         </v-app-bar>
 
-        <v-navigation-drawer v-if="loggedIn" color="#f5f5dc" app v-model="drawer" >
+        <v-navigation-drawer temporary v-if="loggedIn" color="#f5f5dc" app v-model="drawer" >
             <v-list>
                 <v-list-item v-for="link in links" :key="link.text" router :to="link.route">
                     <v-list-item-action>

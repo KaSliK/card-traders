@@ -20,8 +20,7 @@
         created() {
             this.$store.dispatch('retrieveInfo')
                 .then(response => {
-                    this.userInfo = response.data.success
-                    console.log(this.userInfo)
+                    this.userInfo = response.data.data
                 })
         }
     }
