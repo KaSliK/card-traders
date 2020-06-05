@@ -29,7 +29,7 @@ export default new Vuex.Store({
      },
      saveUserInfo(state, payload) {
         state.user = payload
-        localStorage.setItem("user", JSON.stringify(payload));
+        localStorage.setItem("user", (payload));
      },
      clearUserData(state) {
         localStorage.removeItem("access_token");
@@ -37,7 +37,7 @@ export default new Vuex.Store({
         state.token=null
         state.user=null
         location.reload()
-     }
+     },
   },
 
  actions: {
@@ -158,7 +158,10 @@ export default new Vuex.Store({
      },
      userCards(state) {
        if(state.user) return state.user.cards
+        return
+     },
+     user(state) {
+       return state.user
      }
-
   }
 })
