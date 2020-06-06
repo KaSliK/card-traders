@@ -38,7 +38,7 @@
                                     v-model="password" required></v-text-field>
                         </v-row>
                         <v-row>
-                            <v-btn class="mt-4" block v-on:click.prevent.stop="login" :loading="loading" >Login</v-btn>
+                            <v-btn id="login" class="mt-4" block v-on:click.prevent.stop="login" :loading="loading" >Zaloguj</v-btn>
                         </v-row>
                     </v-container>
 

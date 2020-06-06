@@ -43,7 +43,7 @@
                                   label="Powtórz hasło" v-model="c_password" :rules="passwordRules"></v-text-field>
                         </v-row>
                         <v-row>
-                    <v-btn class="mt-4" block type="submit" @click.prevent="register" :loading="loading">Rejestruj</v-btn>
+                    <v-btn id="register" class="mt-4" block type="submit" @click.prevent="register" :loading="loading">Zarejestruj</v-btn>
                         </v-row>
                     </v-container>
                 </v-form>
