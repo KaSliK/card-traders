@@ -1,10 +1,8 @@
 <template>
-
    <v-container>
       <v-layout class="justify-space-around">
          <v-flex class="xs12 sm5 ma-3">
             <v-select
-
                   :items="this.categories"
                   item-text="name"
                   item-value="id"
@@ -39,8 +37,11 @@
                      </v-flex>
                      <v-flex class="xs6 fill-height">
                            <v-card-title class="justify-center">
-                              <h4>{{card.category.name}}</h4>
-                              <h6>{{card.subcateogry.name}}</h6>
+                              <v-layout row>
+                              <v-flex class="xs12 text-center"><h4 >{{card.category.name}}</h4></v-flex>
+
+                              <v-flex class="xs12 text-center"><h6>{{card.subcateogry.name}}</h6></v-flex>
+                              </v-layout>
                            </v-card-title>
                            <v-card-actions class="justify-center">
                               <v-btn icon @click="addOneCard(card)" >
@@ -50,7 +51,7 @@
                                  <v-icon>mdi-minus</v-icon>
                               </v-btn>
                            </v-card-actions>
-                           <v-card-text >
+                           <v-card-text>
                               <span class="caption">Posiadana ilość: {{card.qty}}</span>
                            </v-card-text>
                      </v-flex>
@@ -79,6 +80,7 @@
 
 <script>
    import axios from 'axios'
+   import {checkQty, getCardsId} from "../services/checkQtyService";
     export default {
         name: "AllCards",
        data() {
@@ -98,9 +100,7 @@
          this.categories = this.$store.getters.categories
          this.subCategories = this.$store.getters.subCategories
          this.subCategories.unshift({name: 'Wszystkie'})
-         this.myCardsId = this.getCardsId()
-
-
+         this.myCardsId = getCardsId(this.myCards)
        },
        computed: {
 
@@ -118,48 +118,23 @@
               if(!this.subCategory || this.subCategory === 'Wszystkie') {
                  axios.get(`/api/cards/c/${this.category}`).then(response => {
                     this.cards = response.data.data
-                    this.checkQty()
+                    checkQty(this.cards, this.myCardsId)
               })
               } else {
                axios.get(`/api/cards/${this.category}/${this.subCategory}`).then(response => {
                   this.cards = response.data.data
-                  this.checkQty()
+                  checkQty(this.cards, this.myCardsId)
                   })
                }
 
            },
-          checkQty: function () {
-              console.log(this.myCards)
-             console.log(this.$store.getters.user)
-             this.myCards = this.$store.getters.userCards
-             this.cards = this.cards.map((v) => {
-                if(typeof(this.myCardsId[v.id]) == "object") {
-                   v.qty = this.myCardsId[v.id].pivot.qty
-                } else {
-                   v.qty = 0
-                }
-                return v
-             })
-          },
-          getCardsId: function () {
-             /* eslint-disable */
-             var cardsId = {}
-             Object.keys(this.myCards).map((k,v) =>{
-                let index = parseInt(v)
-                cardsId[this.myCards[index].id] = this.myCards[index]
-             })
-             return cardsId
-          },
           addOneCard: function (card) {
              this.refreshData = (this.refreshData==0) ? 1 : 0;
              card.qty+=1
-             console.log(this.refreshData)
-
           },
           subtractOneCard: function (card) {
              this.refreshData = (this.refreshData==0) ? 1 : 0;
              if(card.qty>0) card.qty-=1
-             console.log(this.refreshData)
           },
           onScroll (e) {
              if (typeof window === 'undefined') return

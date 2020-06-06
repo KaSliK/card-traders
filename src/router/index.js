@@ -59,12 +59,12 @@ const routes = [
     component: () => import('../views/AllCards.vue')
   },
   {
-    path: '/moje_karty',
-    name: 'MyCards',
+    path: '/karty_uzytkownikow',
+    name: 'someoneCards',
     meta: {
       requiresAuth: true,
     },
-    component: () => import('../views/MyCards.vue')
+    component: () => import('../views/someoneCards.vue')
   },
   {
     path: '/karty_wystawione_na_wymiane',

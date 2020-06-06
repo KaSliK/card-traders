@@ -68,7 +68,7 @@
                     {icon: 'mdi-cards-outline', text: 'Strona główna', route: '/'},
                     {icon: 'mdi-account', text: 'Mój profil', route: '/profil'},
                     {icon: 'mdi-cards', text: 'Wszystkie karty', route: '/wszystkie_karty'},
-                    {icon: 'mdi-cards', text: 'Moje karty', route: '/moje_karty'},
+                    {icon: 'mdi-cards', text: 'Karty użytkowników', route: '/karty_uzytkownikow'},
                     {icon: 'mdi-cards', text: 'Wystawione na wymianę', route: '/karty_wystawione_na_wymiane'},
                     {icon: 'mdi-information-variant', text: 'O nas', route: '/about'},
 
