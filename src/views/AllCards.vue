@@ -25,7 +25,7 @@
          </v-flex>
       </v-layout>
       <v-layout class="row wrap">
-         <v-flex class="xs12 sm4 md4 lg2" v-for="card in cards" :key="card.id">
+         <v-flex class="xs12 sm6 md4 lg3 xl2" v-for="card in cards" :key="card.id">
             <v-card elevation="10" :class="[{'notHaving': card.qty==0}, 'ma-2']">
                <v-container class="fluid py-0 px-2">
                   <v-layout class="row">
@@ -51,8 +51,8 @@
                                  <v-icon>mdi-minus</v-icon>
                               </v-btn>
                            </v-card-actions>
-                           <v-card-text>
-                              <span class="caption">Posiadana ilość: {{card.qty}}</span>
+                           <v-card-text class="text-center">
+                              <span class="caption ">Posiadana ilość: {{card.qty}}</span>
                            </v-card-text>
                      </v-flex>
                   </v-layout>
