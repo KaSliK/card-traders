@@ -71,7 +71,9 @@
    import {mapGetters} from 'vuex'
    import {checkQty, getCardsId} from "../services/checkQtyService";
    import MoveStartButton from "../components/MoveStartButton";
-    export default {
+   import getCardsService from "../services/getCardsService";
+
+   export default {
         name: "AllCards",
        components: {MoveStartButton},
        data() {
@@ -103,17 +105,11 @@
        },
        methods: {
            getCards: function () {
-              if(!this.subCategory) {
-                 axios.get(`/api/cards/c/${this.category}`).then(response => {
+              getCardsService.getCards(this.category, this.subCategory)
+                 .then(response => {
                     this.cards = response.data.data
                     checkQty(this.cards, this.myCardsId)
               })
-              } else {
-               axios.get(`/api/cards/${this.category}/${this.subCategory}`).then(response => {
-                  this.cards = response.data.data
-                  checkQty(this.cards, this.myCardsId)
-                  })
-               }
            },
           addOneCard: function (card) {
              this.refreshData = (this.refreshData==0) ? 1 : 0;
