@@ -3,7 +3,7 @@
       <v-layout class="justify-space-around">
          <v-flex class="xs12 sm5 ma-3">
             <v-select
-                  :items="this.categories"
+                  :items="categories"
                   item-text="name"
                   item-value="id"
                   label="Piosenkarka"
@@ -14,7 +14,7 @@
          </v-flex>
          <v-flex class="xs12 sm5 ma-3">
             <v-select
-                  :items="this.subCategories"
+                  :items="subCategories"
                   item-text="name"
                   item-value="id"
                   label="Album"
@@ -40,7 +40,7 @@
                               <v-layout row>
                               <v-flex class="xs12 text-center"><h4 >{{card.category.name}}</h4></v-flex>
 
-                              <v-flex class="xs12 text-center"><h6>{{card.subcateogry.name}}</h6></v-flex>
+                              <v-flex class="xs12 text-center"><h6>{{card.subcategory.name}}</h6></v-flex>
                               </v-layout>
                            </v-card-title>
                            <v-card-actions class="justify-center">
@@ -80,6 +80,7 @@
 
 <script>
    import axios from 'axios'
+   import {mapGetters} from 'vuex'
    import {checkQty, getCardsId} from "../services/checkQtyService";
     export default {
         name: "AllCards",
@@ -87,23 +88,21 @@
            return {
               category: null,
               subCategory: null,
-              categories: null,
-              subCategories: [],
               cards: null,
-              myCards: this.$store.getters.userCards,
               myCardsId: null,
               refreshData: 0,
               fab: false
            }
        },
        mounted() {
-         this.categories = this.$store.getters.categories
-         this.subCategories = this.$store.getters.subCategories
-         this.subCategories.unshift({name: 'Wszystkie'})
-         this.myCardsId = getCardsId(this.myCards)
+         this.myCardsId = getCardsId(this.userCards)
        },
        computed: {
-
+          ...mapGetters([
+             'categories',
+             'subCategories',
+             'userCards'
+          ])
        },
        watch: {
            category: function () {
@@ -126,15 +125,19 @@
                   checkQty(this.cards, this.myCardsId)
                   })
                }
-
            },
           addOneCard: function (card) {
              this.refreshData = (this.refreshData==0) ? 1 : 0;
              card.qty+=1
+             axios.put(`/api/users/cards/add/${card.id}`)
           },
           subtractOneCard: function (card) {
-             this.refreshData = (this.refreshData==0) ? 1 : 0;
-             if(card.qty>0) card.qty-=1
+             if(card.qty>0) {
+                axios.put(`/api/users/cards/sub/${card.id}`)
+                card.qty-=1
+                this.refreshData = (this.refreshData==0) ? 1 : 0;
+             }
+
           },
           onScroll (e) {
              if (typeof window === 'undefined') return
