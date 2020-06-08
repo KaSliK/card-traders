@@ -7,7 +7,7 @@ import axios from "axios";
 
 
 
-
+axios.defaults.baseURL = 'http://ct.zobacztu.pl'
 Vue.config.productionTip = false
 
 new Vue({

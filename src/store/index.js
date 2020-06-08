@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 Vue.use(Vuex)
 
-axios.defaults.baseURL = 'http://ct.zobacztu.pl'
+
 
 
 export default new Vuex.Store({
