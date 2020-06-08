@@ -6,19 +6,7 @@ import vuetify from './plugins/vuetify'
 import axios from "axios";
 
 
-axios.interceptors.request.use(
-   config => {
-     const token = store.getters.token;
-     if (token) {
-       config.headers.common["Authorization"] = `Bearer ${token}`;
-       config.headers.common["Accept"] = "application/json";
-     }
-     return config;
-   },
-   error => {
-     return Promise.reject(error);
-   }
-);
+
 
 Vue.config.productionTip = false
 
@@ -27,6 +15,26 @@ new Vue({
   store,
   vuetify,
   created () {
+     const userDetails = localStorage.getItem("user");
+     if (userDetails) {
+        const userInfo = JSON.parse(userDetails);
+        this.$store.commit("saveUserInfo", userInfo);
+     }
+
+     axios.interceptors.request.use(
+        config => {
+           const token = store.getters.token;
+           if (token) {
+              config.headers.common["Authorization"] = `Bearer ${token}`;
+              config.headers.common["Accept"] = "application/json";
+           }
+           return config;
+        },
+        error => {
+           return Promise.reject(error);
+        }
+     );
+
       this.$store.dispatch('getCategories')
       this.$store.dispatch('getSubCategories')
   },

@@ -8,7 +8,7 @@ axios.defaults.baseURL = 'http://ct.zobacztu.pl'
 
 export default new Vuex.Store({
   state: {
-   user: localStorage.getItem('user') || null,
+   user: null,
    token: localStorage.getItem('access_token') || null,
    categories: [],
    subCategories: []
@@ -22,14 +22,14 @@ export default new Vuex.Store({
           state.token = null
     },
      addCategory(state, payload) {
-       state.categories.push(payload)
+       state.categories = payload
      },
      addSubCategory(state, payload) {
-        state.subCategories.push(payload)
+        state.subCategories = payload
      },
      saveUserInfo(state, payload) {
         state.user = payload
-        localStorage.setItem("user", (payload));
+        localStorage.setItem("user", JSON.stringify(payload));
      },
      clearUserData(state) {
         localStorage.removeItem("access_token");
@@ -110,13 +110,15 @@ export default new Vuex.Store({
     getCategories({commit}) {
        return new Promise( (resolve, reject) => {
           axios.get('/api/categories').then(response => {
+             var category = []
              for (let i=0 ; i<response.data.data.length ; i++) {
-                const category = {
-                   name: response.data.data[i].name,
-                   id: response.data.data[i].id
-                }
-                commit('addCategory', category)
+                category.push({
+                   "name": response.data.data[i].name,
+                   "id": response.data.data[i].id
+                })
+
              }
+             commit('addCategory', category)
           }).catch(error => {
              reject(error)
           })
@@ -125,13 +127,15 @@ export default new Vuex.Store({
     getSubCategories({commit}) {
        return new Promise( (resolve, reject) => {
           axios.get('/api/subcategories').then(response => {
+             var subCategory = []
              for (let i=0 ; i<response.data.data.length ; i++) {
-                const subCategory = {
+                subCategory.push({
                    name: response.data.data[i].name,
                    id: response.data.data[i].id
-                }
-                commit('addSubCategory', subCategory)
+                })
+
              }
+             commit('addSubCategory', subCategory)
              resolve(response)
           }).catch(error => {
              reject(error)

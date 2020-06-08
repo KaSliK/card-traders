@@ -104,7 +104,6 @@
        },
        watch: {
            id: function () {
-              console.log(this.id)
               if(this.validateField() === true && this.id != '') {
                  this.loading=true
                  this.cards = null
@@ -112,7 +111,6 @@
                  this.getOtherUserCards()
 
               }
-
            }
        },
        methods: {

@@ -84,9 +84,8 @@
                             email: this.email,
                             password: this.password
                         })
-                        .then((response)=> {
+                        .then(() => {
                             this.$router.push({ name: 'Profile' })
-                            console.log(response)
                         })
                         .catch(error => {
                             this.serverError= error.response.data.error
