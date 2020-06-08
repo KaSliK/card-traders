@@ -1,7 +1,7 @@
 <template>
    <v-container>
       <h1 class="xs12 text-center">Karty użytkowników</h1>
-      <v-row>
+      <v-row no-gutters>
          <v-col cols="12" sm="6" md="4" class=" offset-md-4 offset-sm-3">
             <v-text-field
                   clearable
@@ -12,6 +12,27 @@
                   v-model="id"
                   :rules="isNumberRule"
             ></v-text-field>
+         </v-col>
+      </v-row>
+      <v-row no-gutters>
+         <v-col cols="12" sm="6" md="4" class=" offset-md-4 offset-sm-3">
+            <v-card
+                  class="mx-auto overflow-y-auto"
+                  id="kozak"
+                  max-height="300px"
+            >
+               <v-list v-scroll:#kozak>
+                  <v-list-item
+                        v-for="item in listOfUsers"
+                        :key="item.name"
+                        @click="setId(item.id)"
+                  >
+                     <v-list-item-content>
+                        <v-list-item-content>{{item.id}} - {{item.name}}</v-list-item-content>
+                     </v-list-item-content>
+                  </v-list-item>
+               </v-list>
+            </v-card>
          </v-col>
       </v-row>
       <v-row v-if="loading" >
@@ -86,6 +107,7 @@
               cards: null,
               id: null,
               myCards: this.$store.getters.userCards,
+              listOfUsers: null,
               myCardsId: null,
               isNumberRule: [
                  v => v==null ||  v == '' || !isNaN(parseFloat(v)) || 'Id to liczba ',
@@ -96,20 +118,26 @@
        },
        mounted() {
           this.myCardsId =/* getCardsId*/(this.myCards)
-
+          this.listOfUserss()
        },
        watch: {
            id: function () {
               if(this.validateField() === true && this.id != '') {
                  this.loading=true
                  this.cards = null
-
                  this.getOtherUserCards()
-
               }
            }
        },
        methods: {
+          listOfUserss: function () {
+             axios.get('api/users/list').then(response => {
+                return this.listOfUsers = response.data.data
+             })
+          },
+          setId: function (id) {
+             this.id = id
+          },
            getOtherUserCards: function () {
               axios.get(`api/cards/u/${this.id}`)
                  .then(response => {
