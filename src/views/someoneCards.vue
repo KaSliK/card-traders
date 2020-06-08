@@ -42,7 +42,7 @@
 
       <v-layout class="row wrap">
          <v-flex class="xs12 sm6 md4 lg3 xl2" v-for="card in cards" :key="card.id">
-            <v-card elevation="10" :class="[{'notHaving': card.qty==0}, 'ma-2']">
+            <v-card elevation="10" :class="[{'notHaving': card.qtyOfUser==0}, 'ma-2']">
                <v-container class="fluid py-0 px-2">
                   <v-layout class="row">
                      <v-flex class="xs6">
@@ -57,16 +57,12 @@
                            <v-layout class=" row wrap align-end justify-center">
                               <v-flex class="shrink">
                                  <v-card-text>
-                                    <span class="caption">Ty posiadasz: {{card.qty}}</span>
+                                    <span class="caption">Ty posiadasz: {{card.qtyOfUser}}</span>
                                  </v-card-text>
                               </v-flex>
                            </v-layout>
                         </v-layout>
                      </v-flex>
-
-
-
-
                   </v-layout>
                </v-container>
             </v-card>
@@ -80,7 +76,7 @@
 
 <script>
    import axios from 'axios'
-   import {checkQty, getCardsId} from "../services/checkQtyService";
+   import {checkQtyForOtherUser, /*getCardsId*/} from "../services/checkQtyService";
 
    export default {
         name: "someoneCards",
@@ -99,7 +95,7 @@
            }
        },
        mounted() {
-          this.myCardsId = getCardsId(this.myCards)
+          this.myCardsId =/* getCardsId*/(this.myCards)
 
        },
        watch: {
@@ -115,9 +111,16 @@
        },
        methods: {
            getOtherUserCards: function () {
-              axios.get(`api/cards/u/${this.id}`).then(response => {
-                 checkQty(this.cards= response.data.data, this.myCardsId)
-                 this.loading=false
+              axios.get(`api/cards/u/${this.id}`)
+                 .then(response => {
+                    this.cards=response.data.data.cards
+
+                    let listOfObjects = Object.keys(this.cards).map((key) => {
+                       return this.cards[key]
+                    })
+                    this.cards = listOfObjects
+                    checkQtyForOtherUser(this.cards, this.myCardsId)
+                    this.loading=false
               })
 
            },

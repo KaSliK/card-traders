@@ -21,7 +21,7 @@
                                    {{card.name}}
                                 </v-card-title>
                                 <v-card-text>
-                                    Ilość: {{card.pivot.qty}}
+                                    Ilość: {{card.qty}}
                                 </v-card-text>
                                 <v-card-actions>
                                     <v-layout class="row justify-center pa-0 ma-0">

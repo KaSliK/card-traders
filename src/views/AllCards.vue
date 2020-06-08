@@ -45,10 +45,10 @@
                               </v-layout>
                            </v-card-title>
                            <v-card-actions class="justify-center">
-                              <v-btn icon @click="addOneCard(card)" >
+                              <v-btn icon @click="addOneCard(card);refresh()" >
                                  <v-icon>mdi-plus</v-icon>
                               </v-btn>
-                              <v-btn icon @click="subtractOneCard(card)">{{card.id}}
+                              <v-btn icon @click="subtractOneCard(card);refresh()">{{card.id}}
                                  <v-icon>mdi-minus</v-icon>
                               </v-btn>
                            </v-card-actions>
@@ -67,9 +67,8 @@
 </template>
 
 <script>
-   import axios from 'axios'
    import {mapGetters} from 'vuex'
-   import {checkQty, getCardsId} from "../services/checkQtyService";
+   import {checkQty, /*getCardsId*/} from "../services/checkQtyService";
    import MoveStartButton from "../components/MoveStartButton";
    import getCardsService from "../services/getCardsService";
 
@@ -86,7 +85,7 @@
            }
        },
        mounted() {
-         this.myCardsId = getCardsId(this.userCards)
+         this.myCardsId = /*getCardsId*/(this.userCards)
        },
        computed: {
           ...mapGetters([
@@ -112,18 +111,14 @@
               })
            },
           addOneCard: function (card) {
-             this.refreshData = (this.refreshData==0) ? 1 : 0;
-             card.qty+=1
-             axios.put(`/api/users/cards/add/${card.id}`)
+             card.qty = getCardsService.addCard(card)
           },
           subtractOneCard: function (card) {
-             if(card.qty>0) {
-                axios.put(`/api/users/cards/sub/${card.id}`)
-                card.qty-=1
-                this.refreshData = (this.refreshData==0) ? 1 : 0;
-             }
-
+             card.qty=getCardsService.subtractCard(card)
           },
+          refresh: function() {
+             this.refreshData = (this.refreshData==0) ? 1 : 0;
+          }
        }
     }
 </script>
