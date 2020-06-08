@@ -14,6 +14,7 @@
          </v-flex>
          <v-flex class="xs12 sm5 ma-3">
             <v-select
+                  clearable
                   :items="subCategories"
                   item-text="name"
                   item-value="id"
@@ -61,20 +62,7 @@
          </v-flex>
       </v-layout>
       <v-btn v-model="refreshData" v-if="refreshData==='refresh'"></v-btn>
-      <v-btn
-            x-small
-            v-scroll="onScroll"
-            v-show="fab"
-            fab
-            dark
-            fixed
-            bottom
-            right
-            color="#dbc08a"
-            @click="toTop"
-      >
-         <v-icon>mdi-arrow-up</v-icon>
-      </v-btn>
+      <move-start-button/>
    </v-container>
 </template>
 
@@ -82,8 +70,10 @@
    import axios from 'axios'
    import {mapGetters} from 'vuex'
    import {checkQty, getCardsId} from "../services/checkQtyService";
+   import MoveStartButton from "../components/MoveStartButton";
     export default {
         name: "AllCards",
+       components: {MoveStartButton},
        data() {
            return {
               category: null,
@@ -91,7 +81,6 @@
               cards: null,
               myCardsId: null,
               refreshData: 0,
-              fab: false
            }
        },
        mounted() {
@@ -114,7 +103,7 @@
        },
        methods: {
            getCards: function () {
-              if(!this.subCategory || this.subCategory === 'Wszystkie') {
+              if(!this.subCategory) {
                  axios.get(`/api/cards/c/${this.category}`).then(response => {
                     this.cards = response.data.data
                     checkQty(this.cards, this.myCardsId)
@@ -139,14 +128,6 @@
              }
 
           },
-          onScroll (e) {
-             if (typeof window === 'undefined') return
-             const top = window.pageYOffset ||   e.target.scrollTop || 0
-             this.fab = top > 40
-          },
-          toTop () {
-             this.$vuetify.goTo(0)
-          }
        }
     }
 </script>

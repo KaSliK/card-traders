@@ -42,7 +42,7 @@
 
       <v-layout class="row wrap">
          <v-flex class="xs12 sm6 md4 lg3 xl2" v-for="card in cards" :key="card.id">
-            <v-card elevation="10" class="ma-2">
+            <v-card elevation="10" :class="[{'notHaving': card.qty==0}, 'ma-2']">
                <v-container class="fluid py-0 px-2">
                   <v-layout class="row">
                      <v-flex class="xs6">
@@ -130,5 +130,10 @@
 </script>
 
 <style scoped>
+   .notHaving {
+      opacity: 1;
+      filter: grayscale(40%);
+      filter: brightness(87%);
+   }
 
 </style>
