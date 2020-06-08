@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from '../store'
 
 
 export default {
@@ -24,14 +25,15 @@ function getCardsByAndSubCategory(category, subCategory) {
 
 function addCard(card) {
    axios.put(`/api/users/cards/add/${card.id}`)
-   return ++card.qty
+   store.dispatch('addOneCard', card)
+   return
 }
 
 function subtractCard(card) {
    if(card.qty>0) {
       axios.put(`/api/users/cards/sub/${card.id}`)
-      return --card.qty
+      store.dispatch('subtractOneCard', card)
    }
-   return card.qty
+   return
 }
 

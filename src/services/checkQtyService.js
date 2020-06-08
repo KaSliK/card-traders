@@ -1,7 +1,6 @@
 export function checkQty(cards, myCardsId) {
    cards = cards.map((v) => {
       if(typeof(myCardsId[v.id]) == "object") {
-         console.log(v)
          v.qty = myCardsId[v.id].qty
       } else {
          v.qty = 0

@@ -111,10 +111,10 @@
               })
            },
           addOneCard: function (card) {
-             card.qty = getCardsService.addCard(card)
+             getCardsService.addCard(card)
           },
           subtractOneCard: function (card) {
-             card.qty=getCardsService.subtractCard(card)
+             getCardsService.subtractCard(card)
           },
           refresh: function() {
              this.refreshData = (this.refreshData==0) ? 1 : 0;

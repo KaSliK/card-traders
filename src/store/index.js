@@ -38,6 +38,14 @@ export default new Vuex.Store({
         state.user=null
         location.reload()
      },
+     addOneCard(state, card) {
+        card.qty++
+        Vue.set(state.user.cards, card.id, card)
+     },
+     subtractOneCard(state, card) {
+        card.qty--
+        Vue.set(state.user.cards, card.id, card)
+     }
   },
 
  actions: {
@@ -141,11 +149,17 @@ export default new Vuex.Store({
              reject(error)
           })
        })
-    },
 
- logout ({ commit }) {
-   commit('clearUserData')
- }
+    },
+    logout ({ commit }) {
+      commit('clearUserData')
+    },
+    addOneCard(context, card) {
+      context.commit('addOneCard', card)
+    },
+    subtractOneCard(context, card) {
+       context.commit('subtractOneCard', card)
+    }
   },
   getters : {
     loggedIn(state) {
