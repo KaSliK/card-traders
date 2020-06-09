@@ -70,10 +70,10 @@
    import {mapGetters} from 'vuex'
    import {checkQty, /*getCardsId*/} from "../services/checkQtyService";
    import MoveStartButton from "../components/MoveStartButton";
-   import getCardsService from "../services/getCardsService";
+   import CardsService from "../services/CardsService";
 
    export default {
-        name: "AllCards",
+      name: "AllCards",
        components: {MoveStartButton},
        data() {
            return {
@@ -85,7 +85,7 @@
            }
        },
        mounted() {
-         this.myCardsId = /*getCardsId*/(this.userCards)
+         this.myCardsId = (this.userCards)
        },
        computed: {
           ...mapGetters([
@@ -104,17 +104,17 @@
        },
        methods: {
            getCards: function () {
-              getCardsService.getCards(this.category, this.subCategory)
+              CardsService.getCards(this.category, this.subCategory)
                  .then(response => {
                     this.cards = response.data.data
                     checkQty(this.cards, this.myCardsId)
               })
            },
           addOneCard: function (card) {
-             getCardsService.addCard(card)
+             CardsService.addCard(card)
           },
           subtractOneCard: function (card) {
-             getCardsService.subtractCard(card)
+             CardsService.subtractCard(card)
           },
           refresh: function() {
              this.refreshData = (this.refreshData==0) ? 1 : 0;

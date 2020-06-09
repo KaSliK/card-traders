@@ -1,41 +1,45 @@
 <template>
    <v-container>
-      <h1 class="xs12 text-center">Karty użytkowników</h1>
-      <v-row no-gutters>
-         <v-col cols="12" sm="6" md="4" class=" offset-md-4 offset-sm-3">
-            <v-text-field
-                  clearable
-                  ref="form"
-                  label="Id użytkownika"
-                  placeholder="Podaj liczbę"
-                  outlined
-                  v-model="id"
-                  :rules="isNumberRule"
-            ></v-text-field>
-         </v-col>
-      </v-row>
-      <v-row no-gutters>
-         <v-col cols="12" sm="6" md="4" class=" offset-md-4 offset-sm-3">
-            <v-card
-                  class="mx-auto overflow-y-auto"
-                  id="kozak"
-                  max-height="300px"
-            >
-               <v-list v-scroll:#kozak>
-                  <v-list-item
-                        v-for="item in listOfUsers"
-                        :key="item.name"
-                        @click="setId(item.id)"
-                  >
-                     <v-list-item-content>
-                        <v-list-item-content>{{item.id}} - {{item.name}}</v-list-item-content>
-                     </v-list-item-content>
-                  </v-list-item>
-               </v-list>
-            </v-card>
-         </v-col>
-      </v-row>
-      <v-row v-if="loading" >
+      <v-card
+            color="#dbc08a"
+      >
+         <v-card-title >
+            Znajdź karty użytkownika
+         </v-card-title>
+         <v-card-text>
+            Wpisz jego ID bądź nazwę
+         </v-card-text>
+         <v-card-text>
+            <v-autocomplete
+                  v-model="inputUser"
+                  :items="items"
+                  :loading="isLoading"
+                  :search-input.sync="search"
+                  color="white"
+                  hide-selected
+                  hide-no-data
+                  item-text="idname"
+                  item-value="id"
+                  label="Użytkownicy"
+                  placeholder="Wpisz by wyszukać"
+                  prepend-icon="mdi-database-search"
+                  return-object
+            ></v-autocomplete>
+         </v-card-text>
+         <v-divider></v-divider>
+         <v-expand-transition>
+            <v-list v-if="inputUser" color="#dbc08a">
+               <v-list-item
+               >
+                  <v-list-item-content>
+                     <v-list-item-subtitle>ID:{{inputUser.id}}</v-list-item-subtitle>
+                     <v-list-item-title >Nick: {{inputUser.name}}</v-list-item-title>
+                  </v-list-item-content>
+               </v-list-item>
+            </v-list>
+         </v-expand-transition>
+      </v-card>
+      <v-row v-if="cardLoading" >
          <v-col cols="12" sm="4" lg="2" v-for="n in 3" :key="n">
             <v-skeleton-loader
                   type="card"
@@ -43,20 +47,19 @@
          </v-col>
       </v-row>
 
-      <v-row v-if="cards != null && cards.length === 0 && id != 0 && id != ''">
+      <v-row v-if="cards != null && cards.length === 0 && inputUser">
          <v-col cols="12" sm="6" md="4" class="offset-md-4 offset-sm-3">
             <v-banner color="#dbc08a">
                <v-avatar
-                  slot="icon"
-                  color="#dbc08a"
-                  size="40"
+                     slot="icon"
+                     color="#dbc08a"
+                     size="40"
                >
                   <v-icon color="white" large>
                      mdi-exclamation-thick
                   </v-icon>
                </v-avatar>
-               Ten użytkownik nie ma żadnych kart lub podałeś zły identyfikator.
-               Wpisz ponownie numer identyfikacyjny
+               Ten użytkownik nie dodał żadnych kart do swojej kolekcji
             </v-banner>
          </v-col>
       </v-row>
@@ -93,71 +96,66 @@
    </v-container>
 
 
+
 </template>
+
 
 <script>
    import axios from 'axios'
-   import {checkQtyForOtherUser, /*getCardsId*/} from "../services/checkQtyService";
-
+   import {checkQtyForOtherUser} from "../services/checkQtyService";
    export default {
-        name: "someoneCards",
-       data() {
-           return {
-              loading: false,
-              cards: null,
-              id: null,
-              myCards: this.$store.getters.userCards,
-              listOfUsers: null,
-              myCardsId: null,
-              isNumberRule: [
-                 v => v==null ||  v == '' || !isNaN(parseFloat(v)) || 'Id to liczba ',
-                 v => (v > 0 || v == '') || 'Id jest liczbą dodatnią',
-              ],
+      data() {
+         return {
+            entries: [],
+            isLoading: false,
+            inputUser: null,
+            search: null,
+            cards: null,
+            myCards: this.$store.getters.userCards,
+            cardLoading: false,
+         }
+      },
+      computed: {
+         items () {
+            return Object.keys(this.entries).map((key) => {
+               this.entries[key].idname =this.entries[key].id +"  "+ this.entries[key].name
+               return this.entries[key]
+            })
+         },
+      },
+      watch: {
+         inputUser() {
+            this.loading=true
+            this.cards = null
+            this.getOtherUserCards()
+         },
+         search () {
+            if (this.items.length > 0) return
+            if (this.isLoading) return
+            this.isLoading = true
+            axios.get('api/users/list')
+               .then(response =>{
+                  console.log(response.data.data)
+                  this.entries = response.data.data
+               }).finally(() => (this.isLoading = false))
+         },
+      },
+      methods: {
+         getOtherUserCards: function () {
+            this.cardLoading=true
+            axios.get(`api/cards/u/${this.inputUser.id}`)
+               .then(response => {
+                  this.cards=response.data.data.cards
+                  this.cards = Object.keys(this.cards).map((key) => {
+                     return this.cards[key]
+                  })
+                  checkQtyForOtherUser(this.cards, this.myCards)
+                  this.cardLoading=false
+               })
 
-           }
-       },
-       mounted() {
-          this.myCardsId =/* getCardsId*/(this.myCards)
-          this.listOfUserss()
-       },
-       watch: {
-           id: function () {
-              if(this.validateField() === true && this.id != '') {
-                 this.loading=true
-                 this.cards = null
-                 this.getOtherUserCards()
-              }
-           }
-       },
-       methods: {
-          listOfUserss: function () {
-             axios.get('api/users/list').then(response => {
-                return this.listOfUsers = response.data.data
-             })
-          },
-          setId: function (id) {
-             this.id = id
-          },
-           getOtherUserCards: function () {
-              axios.get(`api/cards/u/${this.id}`)
-                 .then(response => {
-                    this.cards=response.data.data.cards
-
-                    let listOfObjects = Object.keys(this.cards).map((key) => {
-                       return this.cards[key]
-                    })
-                    this.cards = listOfObjects
-                    checkQtyForOtherUser(this.cards, this.myCardsId)
-                    this.loading=false
-              })
-
-           },
-          validateField () {
-             return this.$refs.form.validate()
-          },
-       },
-
-    }
+         },
+      },
+   }
 </script>
 
 <style scoped>
