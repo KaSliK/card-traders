@@ -6,7 +6,9 @@ export default {
    getCards,
    subtractCard,
    addCard,
-   deleteCard
+   deleteCard,
+   getOtherUserCards,
+   makeArrayFromObject
 }
 function getCards(category, subCategory) {
    if(subCategory === null) {
@@ -43,3 +45,13 @@ function deleteCard(card) {
    store.dispatch('deleteCard', card)
 }
 
+function getOtherUserCards(id) {
+   return axios.get(`api/cards/u/${id}`)
+
+}
+
+function makeArrayFromObject(object) {
+   return Object.keys(object).map((key) => {
+      return object[key]
+   })
+}

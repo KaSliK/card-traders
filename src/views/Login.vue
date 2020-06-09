@@ -85,6 +85,7 @@
                             password: this.password
                         })
                         .then(() => {
+
                             this.$router.push({ name: 'Profile' })
                         })
                         .catch(error => {

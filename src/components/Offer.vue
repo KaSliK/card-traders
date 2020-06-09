@@ -46,6 +46,7 @@
                <v-list-item
                      v-for="myCard in myCards"
                      :key="myCard.id"
+                     v-if="myCard.qty>0"
                      @click="exposedCardId = myCard.id"
                      :class="[{'brown lighten-4' : exposedCardId === myCard.id}]"
                >

@@ -34,9 +34,10 @@ new Vue({
            return Promise.reject(error);
         }
      );
+     this.$store.dispatch('getCategories')
+     this.$store.dispatch('getSubCategories')
 
-      this.$store.dispatch('getCategories')
-      this.$store.dispatch('getSubCategories')
+
   },
   render: h => h(App)
 }).$mount('#app')

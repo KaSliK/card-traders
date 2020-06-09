@@ -75,9 +75,11 @@
                      </v-flex>
                      <v-flex class="xs6">
                         <v-layout fill-height class="column ">
-                           <v-card-title class="justify-center">
-                              {{card.category.name}}
-                           </v-card-title>
+                           <v-layout row>
+                              <v-flex class="xs12 text-center"><h4 >{{card.category.name}}</h4></v-flex>
+
+                              <v-flex class="xs12 text-center"><h6>{{card.subcategory.name}}</h6></v-flex>
+                           </v-layout>
                            <v-layout class=" row wrap align-end justify-center">
                               <v-flex class="shrink">
                                  <v-card-text>
@@ -102,6 +104,7 @@
 
 <script>
    import axios from 'axios'
+   import CardsService from "../services/CardsService";
    import {checkQtyForOtherUser} from "../services/checkQtyService";
    export default {
       data() {
@@ -125,9 +128,14 @@
       },
       watch: {
          inputUser() {
-            this.loading=true
             this.cards = null
-            this.getOtherUserCards()
+            this.cardLoading=true
+            CardsService.getOtherUserCards(this.inputUser.id)
+               .then(response => {
+                  this.cards = CardsService.makeArrayFromObject(response.data.data.cards)
+                  checkQtyForOtherUser(this.cards, this.myCards)
+                  this.cardLoading=false
+               })
          },
          search () {
             if (this.items.length > 0) return
@@ -137,21 +145,6 @@
                .then(response =>{
                   this.entries = response.data.data
                }).finally(() => (this.isLoading = false))
-         },
-      },
-      methods: {
-         getOtherUserCards: function () {
-            this.cardLoading=true
-            axios.get(`api/cards/u/${this.inputUser.id}`)
-               .then(response => {
-                  this.cards=response.data.data.cards
-                  this.cards = Object.keys(this.cards).map((key) => {
-                     return this.cards[key]
-                  })
-                  checkQtyForOtherUser(this.cards, this.myCards)
-                  this.cardLoading=false
-               })
-
          },
       },
    }

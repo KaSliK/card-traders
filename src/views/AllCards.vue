@@ -85,7 +85,7 @@
            }
        },
        mounted() {
-         this.myCardsId = (this.userCards)
+         this.myCardsId = this.userCards
        },
        computed: {
           ...mapGetters([
