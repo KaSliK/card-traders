@@ -83,24 +83,22 @@
         methods: {
             register () {
                 if(this.valid) {
-                    this.$store
-                        .dispatch('register', {
-                            name: this.name,
-                            email: this.email,
-                            password: this.password,
-                            c_password: this.c_password
-                        })
-                        .then(() => {
-                            this.successMessage = 'Rejestracja przebiegła pomyślnie'
-                            this.$router.push({ name: 'Login', params: { dataSuccessMessage: this.successMessage} })
-                        })
-                        .catch(error => {
-                            this.serverErrors = Object.values(error.response.data.error)
-                        }).finally(() => {
-                        this.loading = false;
+                    this.$store.dispatch('register', {
+                        name: this.name,
+                        email: this.email,
+                        password: this.password,
+                        c_password: this.c_password
+                    })
+                    .then(() => {
+                        this.successMessage = 'Rejestracja przebiegła pomyślnie'
+                        this.$router.push({ name: 'Login', params: { dataSuccessMessage: this.successMessage} })
+                    })
+                    .catch(error => {
+                        this.serverErrors = Object.values(error.response.data.error)
+                    }).finally(() => {
+                    this.loading = false;
                     })
                 }
-
             },
         }
     }

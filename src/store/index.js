@@ -72,8 +72,7 @@ export default new Vuex.Store({
        })
    },
    destroyToken(context) {
-       if(context.getters.loggedIn)
-       {
+       if(context.getters.loggedIn) {
            return new Promise((resolve, reject) => {
                axios.post('')
                    .then(response => {
@@ -91,21 +90,21 @@ export default new Vuex.Store({
        }
    },
    retrieveToken(context, credentials) {
-     return new Promise((resolve, reject) => {
-                axios.post('/api/login', {
-                 email: credentials.email,
-                 password: credentials.password,
-             })
-                 .then(response => {
-                     const token = response.data.data.token
-                     localStorage.setItem('access_token', token)
-                     context.commit('retrieveToken', token)
-                     resolve(response)
-                 })
-                 .catch(error => {
-                     reject(error)
-                 })
-         })
+         return new Promise((resolve, reject) => {
+            axios.post('/api/login', {
+              email: credentials.email,
+              password: credentials.password,
+            })
+              .then(response => {
+                  const token = response.data.data.token
+                  localStorage.setItem('access_token', token)
+                  context.commit('retrieveToken', token)
+                  resolve(response)
+              })
+              .catch(error => {
+                  reject(error)
+              })
+            })
    },
      retrieveInfo({commit}) {
          return new Promise((resolve, reject) => {
@@ -121,37 +120,39 @@ export default new Vuex.Store({
      },
     getCategories({commit}) {
        return new Promise( (resolve, reject) => {
-          axios.get('/api/categories').then(response => {
-             var category = []
-             for (let i=0 ; i<response.data.data.length ; i++) {
-                category.push({
-                   "name": response.data.data[i].name,
-                   "id": response.data.data[i].id
-                })
-
-             }
-             commit('addCategory', category)
-          }).catch(error => {
-             reject(error)
-          })
-       })
+          axios.get('/api/categories')
+             .then(response => {
+                var category = []
+                for (let i=0 ; i<response.data.data.length ; i++) {
+                   category.push({
+                      "name": response.data.data[i].name,
+                      "id": response.data.data[i].id
+                   })
+                }
+                commit('addCategory', category)
+            })
+             .catch(error => {
+               reject(error)
+             })
+      })
     },
     getSubCategories({commit}) {
        return new Promise( (resolve, reject) => {
-          axios.get('/api/subcategories').then(response => {
-             var subCategory = []
-             for (let i=0 ; i<response.data.data.length ; i++) {
-                subCategory.push({
-                   name: response.data.data[i].name,
-                   id: response.data.data[i].id
-                })
-
-             }
-             commit('addSubCategory', subCategory)
-             resolve(response)
-          }).catch(error => {
-             reject(error)
-          })
+          axios.get('/api/subcategories')
+             .then(response => {
+                var subCategory = []
+                for (let i=0 ; i<response.data.data.length ; i++) {
+                   subCategory.push({
+                      name: response.data.data[i].name,
+                      id: response.data.data[i].id
+                   })
+                }
+                commit('addSubCategory', subCategory)
+                resolve(response)
+            })
+             .catch(error => {
+               reject(error)
+            })
        })
 
     },

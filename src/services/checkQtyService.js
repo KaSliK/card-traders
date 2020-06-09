@@ -9,7 +9,7 @@ export function checkQty(cards, myCardsId) {
    })
 }
 export function checkQtyForOtherUser(cards, myCardsId) {
-   cards = cards.map((v) => {
+   cards.map((v) => {
       if(typeof(myCardsId[v.id]) == "object") {
          v.qtyOfUser = myCardsId[v.id].qty
       } else {
@@ -18,14 +18,3 @@ export function checkQtyForOtherUser(cards, myCardsId) {
       return v
    })
 }
-/*
-export function getCardsId(myCards) {
-   /!* eslint-disable *!/
-   var cardsId = {}
-   Object.keys(myCards).map((k,v) =>{
-      let index = parseInt(v)
-      cardsId[myCards[index].id] = myCards[index]
-   })
-   return cardsId
-}
-*/

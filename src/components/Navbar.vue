@@ -42,7 +42,6 @@
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
-
     </nav>
 
 </template>
@@ -50,8 +49,6 @@
 <script>
     import { mapGetters } from 'vuex'
     export default {
-
-
         name: "Navbar",
         computed: {
             ...mapGetters([
@@ -71,7 +68,6 @@
                     {icon: 'mdi-cards', text: 'Karty użytkowników', route: '/karty_uzytkownikow'},
                     {icon: 'mdi-cards', text: 'Wystawione na wymianę', route: '/karty_wystawione_na_wymiane'},
                     {icon: 'mdi-information-variant', text: 'O nas', route: '/about'},
-
                 ],
             }
         },

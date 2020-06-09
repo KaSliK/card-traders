@@ -3,8 +3,8 @@
    <v-dialog max-width="500px" v-model="dialog">
       <template v-slot:activator="{ on }">
          <v-btn color="#FF9F1C" v-on="on">
-            <span class="d-none d-sm-flex ">Wystaw kartę na wymianę</span>
-            <v-icon class="d-sm-none">mdi-account-plus-outline</v-icon>
+            <span>Wystaw kartę na wymianę</span>
+
          </v-btn>
       </template>
       <v-card>
@@ -126,7 +126,7 @@
                })
          },
          makeOffer: function () {
-
+            //todo
          }
       }
 

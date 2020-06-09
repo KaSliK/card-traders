@@ -72,35 +72,27 @@
                 ],
             }
         },
-
-
-
         methods: {
             login () {
                 if(this.valid) {
                     this.loading=true;
-                    this.$store
-                        .dispatch('retrieveToken', {
-                            email: this.email,
-                            password: this.password
-                        })
-                        .then(() => {
-
-                            this.$router.push({ name: 'Profile' })
-                        })
-                        .catch(error => {
-                            this.serverError= error.response.data.error
-                            this.password = ''
-                            this.successMessage = ''
-                        })
-                        .finally(() => {
-                            this.loading = false;
-                        })
+                    this.$store.dispatch('retrieveToken', {
+                        email: this.email,
+                        password: this.password
+                    })
+                    .then(() => {
+                        this.$router.push({ name: 'Profile' })
+                    })
+                    .catch(error => {
+                        this.serverError= error.response.data.error
+                        this.password = ''
+                        this.successMessage = ''
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    })
                 }
-
-
             },
-
         }
     }
 </script>
