@@ -3,11 +3,14 @@
     <v-container>
         <h1>Profil</h1>
         <p>Witaj {{userInfo.name}}</p>
-        <v-layout class="text-center">
-            <v-flex class="xs12">
+        <v-flex class="xs12 mb-5">
+            <offer />
+        </v-flex>
+
+            <v-flex class="xs12 text-center">
                 <h1>Twoje karty</h1>
             </v-flex>
-        </v-layout>
+
         <v-layout class="row wrap">
             <v-flex class="xs12 sm6 md4 lg3 xl2" v-for="card in userInfo.cards" :key="card.id" v-if="card.qty>0">
                 <v-card class="ma-2">
@@ -20,7 +23,11 @@
                             <v-flex class="xs6">
                                 <v-layout fill-height class="column ">
                                     <v-card-title class="justify-center">
-                                        {{card.category.name}}
+                                        <v-layout row>
+                                            <v-flex class="xs12 text-center"><h4 >{{card.category.name}}</h4></v-flex>
+
+                                            <v-flex class="xs12 text-center"><h6>{{card.subcategory.name}}</h6></v-flex>
+                                        </v-layout>
                                     </v-card-title>
                                     <v-card-actions>
                                             <v-layout class="row">
@@ -35,9 +42,7 @@
                                                         <v-icon>mdi-delete</v-icon>
                                                     </v-btn>
                                                 </v-flex>
-                                                <v-flex class="xs12 text-center">
-                                                    <v-btn>Wystaw</v-btn>
-                                                </v-flex>
+
                                             </v-layout>
                                     </v-card-actions>
                                     <v-layout class=" row wrap align-end justify-center">
@@ -67,9 +72,10 @@
 <script>
     import MoveStartButton from "../components/MoveStartButton";
     import CardsService from "../services/CardsService";
+    import Offer from "../components/Offer";
     export default {
         name: "Profile",
-        components: {MoveStartButton},
+        components: {Offer, MoveStartButton},
         data() {
             return {
                 userInfo: [],
