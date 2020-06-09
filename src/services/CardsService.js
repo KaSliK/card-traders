@@ -5,7 +5,8 @@ import store from '../store'
 export default {
    getCards,
    subtractCard,
-   addCard
+   addCard,
+   deleteCard
 }
 function getCards(category, subCategory) {
    if(subCategory === null) {
@@ -26,7 +27,6 @@ function getCardsByAndSubCategory(category, subCategory) {
 function addCard(card) {
    axios.put(`/api/users/cards/add/${card.id}`)
    store.dispatch('addOneCard', card)
-   return
 }
 
 function subtractCard(card) {
@@ -34,6 +34,12 @@ function subtractCard(card) {
       axios.put(`/api/users/cards/sub/${card.id}`)
       store.dispatch('subtractOneCard', card)
    }
-   return
+}
+
+function deleteCard(card) {
+   for(let i=0 ; i<card.qty; i++) {
+      axios.put(`/api/users/cards/sub/${card.id}`)
+   }
+   store.dispatch('deleteCard', card)
 }
 

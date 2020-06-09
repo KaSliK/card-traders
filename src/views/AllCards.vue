@@ -48,7 +48,7 @@
                               <v-btn icon @click="addOneCard(card);refresh()" >
                                  <v-icon>mdi-plus</v-icon>
                               </v-btn>
-                              <v-btn icon @click="subtractOneCard(card);refresh()">{{card.id}}
+                              <v-btn icon @click="subtractOneCard(card);refresh()">
                                  <v-icon>mdi-minus</v-icon>
                               </v-btn>
                            </v-card-actions>

@@ -135,7 +135,6 @@
             this.isLoading = true
             axios.get('api/users/list')
                .then(response =>{
-                  console.log(response.data.data)
                   this.entries = response.data.data
                }).finally(() => (this.isLoading = false))
          },

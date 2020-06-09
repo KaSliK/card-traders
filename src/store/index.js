@@ -45,6 +45,10 @@ export default new Vuex.Store({
      subtractOneCard(state, card) {
         card.qty--
         Vue.set(state.user.cards, card.id, card)
+     },
+     deleteCard(state, card) {
+        card.qty = 0
+        Vue.set(state.user.cards, card.id, card)
      }
   },
 
@@ -159,6 +163,9 @@ export default new Vuex.Store({
     },
     subtractOneCard(context, card) {
        context.commit('subtractOneCard', card)
+    },
+    deleteCard(context, card) {
+       context.commit('deleteCard', card)
     }
   },
   getters : {
