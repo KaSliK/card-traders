@@ -68,6 +68,52 @@
                 </v-card>
             </v-flex>
 
+            <v-flex class="xs12 text-center">
+                <h1>Twoje oferty</h1>
+            </v-flex>
+
+            <v-layout class="row wrap">
+                <v-flex class="xs12 sm6 md4 lg3 xl2" v-for="offer in offers" :key="offer.id" v-if="userInfo.id == offer.user.id">
+                    <v-card elevation="10" class="ma-2">
+                        <v-container class="fluid pa-0">
+                            <v-layout class="">
+                                <v-flex class="xs6">
+                                    <v-img :src="'http://ct.zobacztu.pl/images/'+offer.card_offered.image">
+                                        <div class="subheading">Wymienia</div>
+                                    </v-img>
+                                </v-flex>
+                                <v-flex class="xs6">
+                                    <v-img :src="'http://ct.zobacztu.pl/images/'+offer.card_wanted.image">
+                                        <div class="subheading">Poszukuje</div>
+                                    </v-img>
+                                </v-flex>
+                            </v-layout>
+                            <v-flex class="xs12 text-center">
+                                <h4 >{{offer.user.name}}</h4>
+                            </v-flex>
+                            <v-flex class="xs12 text-center">
+                                <h4 >{{offer.status}}</h4>
+                            </v-flex>
+                            <v-flex class="xs12 text-center">
+                                <v-card-actions class="justify-center">
+                                    <v-btn
+
+                                      @click="changeOfferStatus(offer,offer.card_offered.id, offer.card_wanted.id, 1, 'active',offer.id)">
+                                        Aktywny
+                                    </v-btn>
+                                    <v-btn
+
+                                      @click="changeOfferStatus(offer,offer.card_offered.id, offer.card_wanted.id, 0, 'realized', offer.id)">
+                                        Zrealizowany
+                                    </v-btn>
+
+                                </v-card-actions>
+                            </v-flex>
+                        </v-container>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+
         </v-layout>
         <v-btn v-model="refreshData" v-if="refreshData==='refresh'"></v-btn>
         <move-start-button></move-start-button>
@@ -79,6 +125,7 @@
 
 
 <script>
+    import axios from "axios";
     import MoveStartButton from "../components/MoveStartButton";
     import CardsService from "../services/CardsService";
     import Offer from "../components/Offer";
@@ -89,6 +136,7 @@
             return {
                 userInfo: [],
                 refreshData: 0,
+                offers: null
             }
         },
         created() {
@@ -96,6 +144,9 @@
                 .then(response => {
                     this.userInfo = response.data.data
                 })
+            axios.get('api/offers').then(response => {
+                this.offers = response.data.data
+            })
         },
         methods: {
             addOneCard: function (card) {
@@ -109,6 +160,20 @@
             },
             refresh: function() {
                 this.refreshData = (this.refreshData==0) ? 1 : 0;
+            },
+            changeOfferStatus(offer,cardOfferedId, cardWantedId, isActive, status,offerId) {
+
+                axios.put(`api/offers`, {
+                    offer_id: offerId,
+                    card_offered: cardOfferedId,
+                    card_wanted: cardWantedId,
+                    active: isActive,
+                    status: status
+                }).then(() =>{
+                    offer.status=status
+                }).catch(() => {
+                    console.log('Niestety jeszcze nie wprowdzone')
+                })
             }
         }
     }

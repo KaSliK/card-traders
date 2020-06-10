@@ -93,6 +93,7 @@
 
 <script>
    import {mapGetters} from 'vuex';
+   import axios from "axios";
 
    import CardsService from "../services/CardsService";
    import MoveStartButton from "./MoveStartButton";
@@ -132,7 +133,7 @@
       },
       methods: {
          getCards: function () {
-               this.myCards = this.$store.getters.userCards
+            this.myCards = this.$store.getters.userCards
 
             CardsService.getCards(this.category, this.subCategory)
                .then(response => {
@@ -140,10 +141,16 @@
                })
          },
          makeOffer: function () {
-            //todo
+            axios.post('api/offers', {
+               card_offered: this.exposedCardId,
+               card_wanted: this.expectedCardId
+            }).then(() => {
+               this.dialog = false
+               location.reload()
+            })
          }
       }
-   };
+   }
 </script>
 
 <style scoped>
