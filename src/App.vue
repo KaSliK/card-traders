@@ -16,9 +16,7 @@
       loggedIn() {
         return this.$store.getters.loggedIn
       },
-
     },
-
     methods: {
       logout () {
         this.$store.dispatch('logout')

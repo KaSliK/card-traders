@@ -7,8 +7,18 @@
 
          </v-btn>
       </template>
-      <v-card>
-         <v-card-title>Wystaw ofertę</v-card-title>
+      <v-card color="#fff1d1">
+         <v-toolbar
+            color="#e0bc67"
+            class="mb-12"
+            elevation="0"
+         >
+            <v-toolbar-title>Wystaw ofertę</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="dialog=false">
+               <v-icon>mdi-close-thick</v-icon>
+            </v-btn>
+         </v-toolbar>
             <v-flex class="xs12">
                <v-select
                      :items="categories"
@@ -94,7 +104,8 @@
             dialog: false,
             loading: false,
 
-            myCards: this.$store.getters.userCards,
+            myCards: null,
+
 
             cards: null,
             category: null,
@@ -108,7 +119,8 @@
             'categories',
             'subCategories',
             'userCards'
-         ])
+         ]),
+
       },
       watch: {
          category: function () {
@@ -120,6 +132,8 @@
       },
       methods: {
          getCards: function () {
+               this.myCards = this.$store.getters.userCards
+
             CardsService.getCards(this.category, this.subCategory)
                .then(response => {
                   this.cards = response.data.data
@@ -129,7 +143,6 @@
             //todo
          }
       }
-
    };
 </script>
 
