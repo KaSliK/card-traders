@@ -68,12 +68,18 @@ const routes = [
       requiresAuth: true,
     },
     component: () => import('../views/ForChangeCards.vue')
+  },
+  {
+    path: '*',
+    component: Home,
+    name:'NotFound',
   }
 ]
 
 const router = new VueRouter({
   mode: 'history',
-  routes
+  routes,
+
 })
 
 
@@ -96,7 +102,6 @@ router.beforeEach((to, from, next) => {
         }
       } else {
       next()
-
     }
 
 })
