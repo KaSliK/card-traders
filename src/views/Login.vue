@@ -7,7 +7,7 @@
 
         <v-container>
             <v-row justify="center">
-                <h1>gi</h1>
+                <h1>Login</h1>
             </v-row>
             <v-row justify="center">
                 <v-alert v-if="serverError" type="error" class="mt-4 justify-center" style="width: 300px;">
