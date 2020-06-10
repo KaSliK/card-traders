@@ -15,8 +15,6 @@
 
 
 
-
-
       <v-footer
         fixed
         padless

@@ -38,11 +38,6 @@ const routes = [
     component: () => import('../views/Register.vue')
   },
   {
-    path: '/logout',
-    name: 'Logout',
-    component: () => import('../components/Logout.vue')
-  },
-  {
     path: '/profil',
     name: 'Profile',
     meta: {

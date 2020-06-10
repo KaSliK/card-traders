@@ -14,28 +14,9 @@ export default {
          })
          .catch(error => {
             localStorage.removeItem('access_token')
-            context.commit('destroyToken')
             reject(error)
          })
    })
-},
-   destroyToken(context) {
-   if(context.getters.loggedIn) {
-      return new Promise((resolve, reject) => {
-         axios.post('')
-            .then(response => {
-               const token = response.data.data.token
-               localStorage.setItem('access_token', token)
-               context.commit('destroyToken')
-               resolve(response)
-            })
-            .catch(error => {
-               localStorage.removeItem('access_token')
-               context.commit('destroyToken')
-               reject(error)
-            })
-      })
-   }
 },
    retrieveToken(context, credentials) {
    return new Promise((resolve, reject) => {
