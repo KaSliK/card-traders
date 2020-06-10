@@ -1,16 +1,25 @@
 <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
 <template>
     <v-container>
-        <h1>Profil</h1>
-        <p>Witaj {{userInfo.name}}</p>
-        <v-flex class="xs12 mb-5">
-            <offer />
-        </v-flex>
-
-            <v-flex class="xs12 text-center">
-                <h1>Twoje karty</h1>
+            <v-flex class="pb-6 xs12 d-flex justify-center">
+                <v-flex class="xs12 md4">
+                    <v-card
+                          class="pa-3 xs12 text-center"
+                          color="#f2dcae"
+                          elevation="7"
+                    >
+                        <h1>Profil</h1>
+                        <p>Witaj {{userInfo.name}}</p>
+                        <v-flex class="xs12 mb-5">
+                            <offer />
+                        </v-flex>
+                    </v-card>
+                </v-flex>
             </v-flex>
 
+        <v-flex class="xs12 text-center">
+            <h1>Twoje karty</h1>
+        </v-flex>
         <v-layout class="row wrap">
             <v-flex class="xs12 sm6 md4 lg3 xl2" v-for="card in userInfo.cards" :key="card.id" v-if="card.qty>0">
                 <v-card class="ma-2">

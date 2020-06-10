@@ -2,7 +2,7 @@
 <template>
    <v-dialog max-width="500px" v-model="dialog">
       <template v-slot:activator="{ on }">
-         <v-btn color="#FF9F1C" v-on="on">
+         <v-btn color="#ccb993" v-on="on">
             <span>Wystaw kartę na wymianę</span>
 
          </v-btn>

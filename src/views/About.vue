@@ -1,7 +1,18 @@
 <template>
   <v-container>
-  <h1>Informacje o nas zostaną dodane wkrótce</h1>
-    <div>Na chwilę obecną cieszcie się możliwością kolekcjonowania kart</div>
+    <v-flex class="pb-6 xs12 d-flex justify-center">
+      <v-flex class="xs12 md4">
+        <v-card
+              class="pa-3 xs12 text-center"
+              color="#f2dcae"
+              elevation="7"
+        >
+          <h2>Informacje o nas zostaną dodane wkrótce</h2>
+          <div>Na chwilę obecną cieszcie się możliwością kolekcjonowania kart</div>
+        </v-card>
+      </v-flex>
+    </v-flex>
+
 
 
 

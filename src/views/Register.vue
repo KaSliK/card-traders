@@ -1,10 +1,8 @@
 <template>
     <v-container fluid fill-height>
         <v-container>
-
-
             <v-row justify="center">
-                <h1>Register</h1>
+                <h1>Rejestracja</h1>
             </v-row>
             <v-row justify="center" >
                 <v-alert v-if="successMessage" class="mt-4" type="success" style="width: 300px;">
