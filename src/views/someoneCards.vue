@@ -3,8 +3,10 @@
       <v-card
             color="#dbc08a"
       >
-         <v-card-title >
-            Znajdź karty użytkownika
+         <v-card-title class="px-0">
+            <v-flex class="xs12 text-center">
+               Znajdź karty użytkownika
+            </v-flex>
          </v-card-title>
          <v-card-text>
             Wpisz jego ID bądź nazwę
@@ -33,7 +35,7 @@
                >
                   <v-list-item-content>
                      <v-list-item-subtitle>ID:{{inputUser.id}}</v-list-item-subtitle>
-                     <v-list-item-title >Nick: {{inputUser.name}}</v-list-item-title>
+                     <v-list-item-title >Nazwa: {{inputUser.name}}</v-list-item-title>
                   </v-list-item-content>
                </v-list-item>
             </v-list>
@@ -82,8 +84,9 @@
                            </v-layout>
                            <v-layout class=" row wrap align-end justify-center">
                               <v-flex class="shrink">
-                                 <v-card-text>
+                                 <v-card-text class="text-center">
                                     <span class="caption">Ty posiadasz: {{card.qtyOfUser}}</span>
+                                    <span class="caption"> Posiada: {{card.qty}}</span>
                                  </v-card-text>
                               </v-flex>
                            </v-layout>
